@@ -1,6 +1,5 @@
 #!/bin/env texttool
 
-import subprocess
 import textwrap
 
 
