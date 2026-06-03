@@ -16,17 +16,23 @@ with Text("README.md") as doc:
 # EO_EXAMPLE_TOC
 
 with Text("example.py") as doc:
-    example_toc = textwrap.indent(
+    first_line = (
         doc.sel(
-            start_after="# EXAMPLE_TOC",
-            end="# EO_EXAMPLE_TOC"
-        ).extract(),
-        prefix="    "
+            end="\n"
+        ).extract()
     )
+    example_toc = doc.sel(
+        start_after="# EXAMPLE_TOC",
+        end="# EO_EXAMPLE_TOC"
+    ).extract()
 
 with Text("README.md") as doc:
+    example = textwrap.indent(
+        f"\n{first_line}\n{example_toc}",
+        prefix="    "
+    )
     doc.sel(
         start_after="<!-- EXAMPLE_TOC -->",
         end="<!-- EO_EXAMPLE_TOC -->"
-    ).replace(example_toc)
+    ).replace(example)
     doc.save()
