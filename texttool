@@ -99,7 +99,8 @@ class Text:
         cursor to the end of the first occurance, use `end_after`.
 
         If no end is provided, the ending selection cursor is set to the end of
-        the starting selection.
+        the starting selection. If `end` is -1 (integer), set the cursor to the
+        end of the file.
         """
         if start is not None:
             self.sel_start_text = start
@@ -109,8 +110,11 @@ class Text:
             self.sel_start_pos = self._find(start_after) + len(start_after)
 
         if end is not None:
-            self.sel_end_text = end
-            self.sel_end_pos = self._find(end, self.sel_start_pos)
+            if end == -1:
+                self.sel_end_pos = len(self.content)
+            else:
+                self.sel_end_text = end
+                self.sel_end_pos = self._find(end, self.sel_start_pos)
         elif end_after is not None:
             self.sel_end_text = end
             self.sel_end_pos = self._find(end_after, self.sel_start_pos) + len(end_after)
