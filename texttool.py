@@ -160,9 +160,14 @@ class Text:
         """
         Set the selection end using a regular expression.
 
+        Searching always starts from the current selection starting position.
+
         If `after` is True, set the selection cursor after `match_re`.
         """
-        match = re.search(match_re, self.content)
+        # We need to compile the regexp first, because `re.search()` itself
+        # doesn't support passing a position, but the compiled version does.
+        pattern = re.compile(match_re)
+        match = pattern.search(self.content, self.start_pos)
         if match is None:
             raise TextError("End regexp '{match_re}' not found")
 
