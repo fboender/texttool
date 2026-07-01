@@ -138,8 +138,9 @@ class Text:
 
     def end(self, match, after=False):
         """
-        Set the selection end using a string. It is always after
-        `self.start_match`.
+        Set the selection end using a string.
+
+        Searching always starts from the current selection starting position.
 
         If `after` is True, set the selection cursor after `match`.
         """
