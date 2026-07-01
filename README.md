@@ -14,14 +14,13 @@ A text manipulation tool / python library.
       file
 * `Text`: Manipulate text using selection cursors.
 
-# Example
+# Examples
 
 ## Markdown Table of Contents
 
 The following example generates a table of contents for a markdown file and
 replaces an existing ToC in that same file:
 
-<!-- EXAMPLE_TOC -->
     #!/bin/env texttool
 
     with open("README.md") as fh:
@@ -33,4 +32,3 @@ replaces an existing ToC in that same file:
             end="\n<!-- EO_TOC -->"
         ).replace(toc)
         doc.save()
-<!-- EO_EXAMPLE_TOC -->
