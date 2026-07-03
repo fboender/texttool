@@ -125,7 +125,7 @@ class Text:
         """
         match = re.search(match_re, self.content)
         if match is None:
-            raise TextError("Start regexp '{match_re} not found")
+            raise TextError(f"Start regexp '{match_re}' not found")
 
         self.start_match = match.group()
 
@@ -146,7 +146,7 @@ class Text:
         """
         pos = self.content.find(match, self.start_pos + 1)
         if pos == -1:
-            raise TextError("End string '{match}' not found")
+            raise TextError(f"End string '{match}' not found")
 
         self.end_match = match
 
@@ -170,7 +170,7 @@ class Text:
         pattern = re.compile(match_re)
         match = pattern.search(self.content, self.start_pos)
         if match is None:
-            raise TextError("End regexp '{match_re}' not found")
+            raise TextError(f"End regexp '{match_re}' not found")
 
         self.end_text = match.group()
 
