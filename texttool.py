@@ -98,13 +98,18 @@ class Text:
         # Current string that was used to set the selection end position
         self.end_match = None
 
-    def start(self, match, after=False):
+    def start(self, match, after=False, forward=False):
         """
         Set the selection start using a string.
 
         If `after` is True, set the selection cursor after `match`.
+
+        If `forward` is True, search from current selection starting position.
         """
-        pos = self.content.find(match)
+        search_pos = 0
+        if forward is True and self.start_pos is not None:
+            search_pos = self.start_pos
+        pos = self.content.find(match, search_pos)
         if pos == -1:
             raise TextError(f"Start string '{match}' not found")
 
@@ -136,15 +141,20 @@ class Text:
 
         return self
 
-    def end(self, match, after=False):
+    def end(self, match, after=False, forward=False):
         """
         Set the selection end using a string.
 
         Searching always starts from the current selection starting position.
 
         If `after` is True, set the selection cursor after `match`.
+
+        If `forward` is True, search from current selection ending position.
         """
-        pos = self.content.find(match, self.start_pos + 1)
+        search_pos = self.start_pos + 1
+        if forward is True and self.end_pos is not None:
+            search_pos = self.end_pos
+        pos = self.content.find(match, search_pos)
         if pos == -1:
             raise TextError(f"End string '{match}' not found")
 
@@ -200,6 +210,20 @@ class Text:
             self.end_pos = self.start_pos + len(self.start_match)
 
         return self
+
+    def start_forward(self, match, after=False):
+        """
+        Forward the selection start to the next occurence of `match` (from the
+        current selection starting position).
+        """
+        return self.start(match, after, forward=True)
+
+    def end_forward(self, match, after=False):
+        """
+        Forward the selection end to the next occurence of `match` (from the
+        current selection ending position).
+        """
+        return self.end(match, after, forward=True)
 
     def insert(self, content, after=False):
         """
